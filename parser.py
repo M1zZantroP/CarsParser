@@ -1,3 +1,5 @@
+import time
+
 import requests
 from bs4 import BeautifulSoup
 import csv
@@ -15,8 +17,7 @@ def get_html(url, params=None):
     return requests.get(URL, params=params, headers=HEADERS).text
 
 
-def get_cars():
-    html = get_html(URL)
+def get_cars(html):
     soup = BeautifulSoup(html, 'lxml')
     items = soup.find_all('div', class_='proposition')
     cars_list = []
@@ -40,8 +41,43 @@ def get_cars():
             'Фото': i.find('img', class_='m-auto').get('src'),
             'Посилання': 'https://auto.ria.com' + i.find('a').get('href')
         })
+    return cars_list
 
 
-    print(cars_list)
+def get_max_pagination(html):
+    soup = BeautifulSoup(html, 'lxml')
+    paginations = soup.find_all(class_='page-link')
 
-get_cars()
+    return int(paginations[-2].get_text())
+
+
+def parser():
+    print('[INFO] Parser running... .')
+    html = get_html(URL)
+    pagination = get_max_pagination(html)
+    cars = []
+
+    for i in range(1, pagination + 1):
+        print(f'[INFO] Parsing {i}/{pagination} page')
+        html = get_html(URL, params={'page': i})
+        temp = get_cars(html)
+        cars.extend(temp)
+
+    return cars
+
+
+if __name__ == '__main__':
+    start_time = time.time()
+    cars = parser()
+    print('[INFO] Creating --> cars.csv')
+    keywords = ['Назва', 'Ціна - $(USD)', 'Ціна - грн(UAH)', 'Місто', 'Тип палива', 'Трансмісія',
+                'Тип приводу', 'Пропозиції', 'VIN-код', 'Деталі', 'Фото', 'Посилання']
+    with open('cars.csv', 'w') as file:
+        writer = csv.writer(file)
+        writer.writerow(keywords)
+        for i in cars:
+            writer.writerow(list(i.values()))
+    print('File save successful!')
+
+    print(f'Finished in {round(time.time() - start_time, 3)} sec.')
+    print('Bye...')
