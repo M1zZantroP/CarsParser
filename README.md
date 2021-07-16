@@ -8,7 +8,5 @@ With this parser we can analyze all cars of any brand from the site autoria.com.
 
 # Work
 
-![image](https://user-images.githubusercontent.com/33322034/124089606-b5fc7680-da5c-11eb-9221-ab05d7c5a474.png)
-![image](https://user-images.githubusercontent.com/33322034/124089651-c14fa200-da5c-11eb-83e0-2da066c90ada.png)
-![image](https://user-images.githubusercontent.com/33322034/124089764-e17f6100-da5c-11eb-990c-31e2ccf3881e.png)
+![image](https://user-images.githubusercontent.com/33322034/125925766-c705f45b-7d55-44a8-a04a-95cbc88d108f.png)
 
