@@ -35,9 +35,9 @@ def get_cars(html):
             'Тип палива': i.find('span', class_='region').find_next('span').text.strip().replace('• ', '(') + ')',
             'Трансмісія': i.find('span', class_='region').find_next(class_='item').find_next(class_='item').text.strip(),
             'Тип приводу': i.find('span', class_='region').find_next(class_='item').find_next(class_='item').find_next(class_='item').text.strip(),
-            'Пропозиції': '; '.join([x.text.strip().replace(' • ', ' - ') for x in i.find_all(class_='badge--grey')]),
+            'Пропозиції': ' / '.join([x.text.strip().replace(' • ', ' - ') for x in i.find_all(class_='badge--grey')]),
             'VIN-код': vin,
-            'Деталі': i.find(class_='proposition_badges').find_next('div').get_text(strip=True),
+            # 'Деталі': i.find(class_='proposition_badges').find_next('div').get_text(strip=True),
             'Фото': i.find('img', class_='m-auto').get('src'),
             'Посилання': 'https://auto.ria.com' + i.find('a').get('href')
         })
@@ -58,7 +58,7 @@ def parser():
     cars = []
 
     for i in range(1, pagination + 1):
-        print(f'[INFO] Parsing {i}/{pagination} page')
+        print(f'[INFO] Parsing #{i}/{pagination} page')
         html = get_html(URL, params={'page': i})
         temp = get_cars(html)
         cars.extend(temp)
@@ -68,16 +68,18 @@ def parser():
 
 if __name__ == '__main__':
     start_time = time.time()
+    file_name = URL.split('-')[-1][:-1]
     cars = parser()
-    print('[INFO] Creating --> cars.csv')
-    keywords = ['Назва', 'Ціна - $(USD)', 'Ціна - грн(UAH)', 'Місто', 'Тип палива', 'Трансмісія',
-                'Тип приводу', 'Пропозиції', 'VIN-код', 'Деталі', 'Фото', 'Посилання']
-    with open('cars.csv', 'w') as file:
-        writer = csv.writer(file)
-        writer.writerow(keywords)
+    print(f'[INFO] Creating --> cars_{file_name}.csv')
+    with open(f'cars_{file_name}.csv', 'w') as file:
+        fieldnames = ['Назва', 'Ціна - $(USD)', 'Ціна - грн(UAH)', 'Місто', 'Тип палива', 'Трансмісія',
+                      'Тип приводу', 'Пропозиції', 'VIN-код', 'Фото', 'Посилання']
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
+        writer.writeheader()
         for i in cars:
-            writer.writerow(list(i.values()))
-    print('File save successful!')
+            writer.writerow(i)
 
-    print(f'Finished in {round(time.time() - start_time, 3)} sec.')
+    print('File saved successful!')
+
+    print(f'\nFinished in {round(time.time() - start_time, 3)} sec.')
     print('Bye...')
