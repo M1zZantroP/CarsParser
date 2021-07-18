@@ -7,7 +7,6 @@ import requests
 import lxml
 from bs4 import BeautifulSoup
 
-
 HEADERS = {
 	'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36',
 	'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9'}
@@ -16,10 +15,12 @@ URL = input('Enter URL --->  ')
 
 
 def get_html(url, params=None):
+	"""THe function get html from URL."""
 	return requests.get(url=url, params=params, headers=HEADERS).text
 
 
 def get_paginations():
+	"""The function find and return max page count from necessary category."""
 	otp = webdriver.FirefoxOptions()
 	otp.add_argument('--headless')
 	driver = webdriver.Firefox(executable_path='/home/mizzantrop/git_projects/CarsParser/geckodriver', options=otp)
@@ -34,6 +35,7 @@ def get_paginations():
 
 
 def get_cars(html):
+	"""The function get cars information and make dictionary with this information."""
 	soup = BeautifulSoup(html, 'lxml')
 	items = soup.find_all('div', class_='content-bar')
 	cars_list = []
@@ -59,7 +61,7 @@ def get_cars(html):
 			'VIN-код': vin,
 			'Актуальність': i.find('div', class_='footer_ticket').get_text(strip=True),
 			'Посилання': i.find('a', class_='address').get('href')
-			})
+		})
 	return cars_list
 
 
@@ -69,7 +71,7 @@ def parser():
 	cars = []
 
 	for i in range(pagination + 1):
-		print(f'[INFO] Parsing #{i+1}/{pagination + 1} page')
+		print(f'[INFO] Parsing #{i + 1}/{pagination + 1} page')
 		html = get_html(URL, params={'page': i, 'size': 20})
 		cars.extend(get_cars(html))
 
@@ -77,6 +79,7 @@ def parser():
 
 
 def get_file_name(url):
+	"""Make file name from URL."""
 	temp = url.split('&')
 	marka_id = ''
 	model_id = ''
@@ -93,6 +96,8 @@ def main():
 	cars = parser()
 	file_name = get_file_name(URL)
 	print(f'[INFO] Creating --> {file_name}.csv')
+
+	# Write data to .csv
 	with open(f'{file_name}.csv', 'w') as file:
 		fieldnames = ['Назва', 'Ціна - $(USD)', 'Ціна - грн(UAH)', 'Місто', 'Пробіг', 'Тип палива',
 					  'Трансмісія', 'Учасник ДТП', 'VIN-код', 'Актуальність', 'Посилання']
@@ -104,7 +109,7 @@ def main():
 			writer.writerow(i)
 		print('File saved successful!')
 
-	# Opening file in Windows
+	# Auto-opening file in Windows
 	if sys.platform == 'win32':
 		os.startfile(f'{file_name}.csv')
 

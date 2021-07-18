@@ -13,10 +13,12 @@ HEADERS = {'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KH
 
 
 def get_html(url, params=None):
+    """THe function get html from URL."""
     return requests.get(URL, params=params, headers=HEADERS).text
 
 
 def get_cars(html):
+    """The function get cars information and make dictionary with this information."""
     soup = BeautifulSoup(html, 'lxml')
     items = soup.find_all('div', class_='proposition')
     cars_list = []
@@ -44,6 +46,7 @@ def get_cars(html):
 
 
 def get_max_pagination(html):
+    """The function find and return max page count from necessary category."""
     soup = BeautifulSoup(html, 'lxml')
     paginations = soup.find_all(class_='page-link')
 
@@ -67,9 +70,12 @@ def parser():
 
 def main():
     start_time = time.time()
+    # Make file name from URL
     file_name = URL.split('-')[-1][:-1]
     cars = parser()
     print(f'[INFO] Creating --> cars_{file_name}.csv')
+
+    # Write data to .csv
     with open(f'cars_{file_name}.csv', 'w') as file:
         fieldnames = ['Назва', 'Ціна - $(USD)', 'Ціна - грн(UAH)', 'Місто', 'Тип палива', 'Трансмісія',
                       'Тип приводу', 'Пропозиції', 'VIN-код', 'Фото', 'Посилання']
@@ -79,7 +85,7 @@ def main():
             writer.writerow(i)
         print('File saved successful!')
 
-    #Opening file in Windows
+    # Auto-opening file in Windows
     if sys.platform == 'win32':
         os.startfile(f'{file_name}.csv')
 
