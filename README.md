@@ -7,21 +7,27 @@ With this parser we can analyze all cars of any brand from the site autoria.com.
 3. _pip install -r requirements.txt_
 
 # Work
-**Example 1**
 
-![image](https://user-images.githubusercontent.com/33322034/125925766-c705f45b-7d55-44a8-a04a-95cbc88d108f.png)
 
-**Example 2**
+**Example 1 - Category "New Cars"**
 
-![image](https://user-images.githubusercontent.com/33322034/125926228-39896629-bfa8-4302-9053-abe4cb969b51.png)
+![1](https://user-images.githubusercontent.com/33322034/126067379-0a08ec84-61f4-4beb-ae30-62081867f551.png)
 
-**Example 3**
 
-![image](https://user-images.githubusercontent.com/33322034/125926360-8f93b897-6db6-45d6-85d2-fb6bbbf527bd.png)
+**Example 2 - Category "Used Cars**
+
+![2](https://user-images.githubusercontent.com/33322034/126067427-226ea108-9fa8-467c-8333-76ff61c50ab0.png)
+
+
+**Example 3 - different choice**
+
+![3](https://user-images.githubusercontent.com/33322034/126067432-e0f32e10-c4ef-47ca-8074-fdb22e388c5d.png)
 
 **File structure**
 
-![image](https://user-images.githubusercontent.com/33322034/125926439-7ec47abd-53cc-45ef-acb7-8903b16ed75e.png)
+![image](https://user-images.githubusercontent.com/33322034/126067653-ee5e4490-82bb-4717-a85e-7cfd79af1df1.png)
+
+**Files with new cars**
 
 ![image](https://user-images.githubusercontent.com/33322034/125926728-e76a04d9-ac6c-40ce-b42f-e9cad79f0def.png)
 
@@ -29,3 +35,6 @@ With this parser we can analyze all cars of any brand from the site autoria.com.
 
 ![image](https://user-images.githubusercontent.com/33322034/125926630-255a15c0-dfc3-430f-8f47-eb1a7ef3ac21.png)
 
+**File with used cars**
+
+![image](https://user-images.githubusercontent.com/33322034/126067549-82baa175-b16d-44d7-a297-0003d6585bf4.png)
